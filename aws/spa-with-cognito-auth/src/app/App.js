@@ -6,13 +6,13 @@ import Routes from "./Routes";
 import {AuthProvider} from "../authentication/providers/AuthProvider";
 import Navbar from "./navbar/Navbar";
 
-export default function App({settings}) {
+export default function App() {
     return (
-        <AuthProvider settings={settings}>
+        <AuthProvider>
             <BrowserRouter>
                 <div className={'application'}>
                     <header className={'header'}>
-                        <Navbar />
+                        <Navbar/>
                     </header>
                     <main className={'main'}>
                         <Routes/>

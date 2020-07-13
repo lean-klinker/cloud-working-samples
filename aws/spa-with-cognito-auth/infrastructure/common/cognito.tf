@@ -24,19 +24,14 @@ resource "aws_iam_role" "identity_role" {
   name = "${local.namespace}-identity-role"
 
   assume_role_policy = data.template_file.cognito_iam_assume_role_policy.rendered
+
+  tags = local.tags
 }
 
 resource "aws_cognito_user_pool" "spa" {
   name = "${local.namespace}-cognito-user-pool"
 
-  alias_attributes = [
-    "email",
-    "preferred_username"
-  ]
-
-  auto_verified_attributes = [
-    "email"
-  ]
+  tags = local.tags
 
   admin_create_user_config {
     allow_admin_create_user_only = false
@@ -103,6 +98,8 @@ resource "aws_cognito_identity_pool" "spa" {
   developer_provider_name = "${local.namespace}provider"
 
   allow_unauthenticated_identities = false
+
+  tags = local.tags
 
   cognito_identity_providers {
     client_id = aws_cognito_user_pool_client.spa_app_client.id

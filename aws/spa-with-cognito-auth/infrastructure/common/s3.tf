@@ -34,6 +34,8 @@ resource "aws_s3_bucket" "spa" {
   bucket = "${local.namespace}-spa"
 
   acl = "private"
+
+  tags = local.tags
 }
 
 resource "aws_s3_bucket_object" "spa_content" {
@@ -43,6 +45,7 @@ resource "aws_s3_bucket_object" "spa_content" {
   source = "${var.spa_output}/${each.value}"
   content_type = lookup(local.mime_types, split(".", each.value)[length(split(".", each.value)) - 1])
 
+  tags = local.tags
   depends_on = [
     aws_s3_bucket.spa
   ]
@@ -53,6 +56,8 @@ resource "aws_s3_bucket_object" "settings_json" {
   key = "settings.json"
   content_base64 = base64encode(data.template_file.spa_settings_file.rendered)
   content_type = "application/json"
+
+  tags = local.tags
 
   depends_on = [
     aws_s3_bucket.spa,

@@ -89,6 +89,8 @@ resource "aws_cloudfront_distribution" "spa" {
     }
   }
 
+  tags = local.tags
+
   depends_on = [
     aws_s3_bucket.spa
   ]
