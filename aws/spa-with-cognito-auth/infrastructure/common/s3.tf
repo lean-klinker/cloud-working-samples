@@ -20,6 +20,7 @@ data "template_file" "spa_settings_file" {
   vars = {
     spa_client_id = aws_cognito_user_pool_client.spa_app_client.id
     idp_authority = local.cognito_user_pool_uri
+    idp_metadata_uri = local.cognito_oidc_metadata_uri
     spa_redirect_uri = "${local.cloudfront_uri}/.auth/callback"
   }
 

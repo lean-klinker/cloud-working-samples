@@ -1,0 +1,19 @@
+.application {
+  height: 100vw;
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+          "header"
+          "main";
+}
+
+.header {
+  height: 60px;
+  grid-area: header;
+}
+
+.main {
+  height: 100vw;
+  grid-area: main;
+}

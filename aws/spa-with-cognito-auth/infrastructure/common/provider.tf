@@ -10,3 +10,7 @@ provider "aws" {
 provider "template" {
   version = "2.1.2"
 }
+
+provider "random" {
+  version = "=2.3.0"
+}

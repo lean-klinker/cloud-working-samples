@@ -1,5 +1,6 @@
 locals {
   cognito_user_pool_uri = "https://${aws_cognito_user_pool_domain.spa.domain}.auth.${var.region}.amazoncognito.com"
+  cognito_oidc_metadata_uri = "https://${aws_cognito_user_pool.spa.endpoint}/.well-known/openid-configuration"
 }
 
 resource "random_integer" "spa_domain_postfix" {
@@ -66,7 +67,8 @@ resource "aws_cognito_user_pool_client" "spa_app_client" {
   ]
 
   allowed_oauth_flows = [
-    "code"
+    "code",
+    "implicit"
   ]
 
   allowed_oauth_scopes = [

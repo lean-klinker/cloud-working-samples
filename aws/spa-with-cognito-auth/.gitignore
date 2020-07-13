@@ -28,3 +28,6 @@ yarn-error.log*
 
 # JetBrains
 .idea/
+
+# Settings
+settings.json
