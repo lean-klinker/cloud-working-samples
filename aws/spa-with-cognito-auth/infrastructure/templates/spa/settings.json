@@ -1,0 +1,7 @@
+{
+  "authority": "${idp_authority}",
+  "client_id": "${spa_client_id}",
+  "response_type": "code",
+  "scope": "openid profile",
+  "redirect_uri": "${spa_redirect_uri}"
+}

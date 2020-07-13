@@ -1,4 +1,8 @@
-resource "aws_cloudfront_distribution" "spa_app_distribution" {
+locals {
+  cloudfront_uri = "https://${aws_cloudfront_distribution.spa.domain_name}"
+}
+
+resource "aws_cloudfront_distribution" "spa" {
   enabled = true
   is_ipv6_enabled = true
   default_root_object = "index.html"
@@ -31,7 +35,7 @@ resource "aws_cloudfront_distribution" "spa_app_distribution" {
   }
 
   origin {
-    domain_name = aws_s3_bucket.spa_bucket.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.spa.bucket_regional_domain_name
     origin_id = var.spa_origin_id
   }
 
@@ -86,6 +90,6 @@ resource "aws_cloudfront_distribution" "spa_app_distribution" {
   }
 
   depends_on = [
-    aws_s3_bucket.spa_bucket
+    aws_s3_bucket.spa
   ]
 }

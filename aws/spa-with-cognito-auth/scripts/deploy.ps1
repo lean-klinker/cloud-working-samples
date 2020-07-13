@@ -1,7 +1,7 @@
-param ([string] $environment = "dev")
+param ([string] $environment = "dev", [bool] $should_destroy = $false)
 
-function Create-Terraform-Backend-Bucket([string] $env) {
-    $bucket_name = "spa-cognito-sample-${env}"
+function Create-Terraform-Backend-Bucket() {
+    $bucket_name = "spa-cognito-sample-${environment}"
     aws s3 mb "s3://${bucket_name}"
 }
 
@@ -9,26 +9,30 @@ function Build-Spa-Application() {
     yarn build
 }
 
-function Deploy-Terraform-Infrastructure([string] $env) {
+function Deploy-Terraform-Infrastructure() {
     $plan_path = "plan.tfplan"
-
-    Push-Location "./infrastructure/${env}"
+    Push-Location "./infrastructure/${environment}"
         terraform init
-        terraform plan -out $plan_path
+        terraform plan -out="${plan_path}" -input=false
+        terraform apply "${plan_path}"
     Pop-Location
 }
 
-function Teardown-Terraform-Infrastructure([string] $env) {
-    Push-Location "./infrastructure/${env}"
+function Destroy-Terraform-Infrastructure() {
+    Push-Location "./infrastructure/${environment}"
         terraform destroy
     Pop-Location
 }
 
-function Main($env) {
+function Main() {
     Build-Spa-Application
-    Create-Terraform-Backend-Bucket($env)
-    Deploy-Terraform-Infrastructure($env)
-    Teardown-Terraform-Infrastructure($env)
+    Create-Terraform-Backend-Bucket
+    Deploy-Terraform-Infrastructure
+
+    if ($should_destroy -eq $True)
+    {
+        Destroy-Terraform-Infrastructure
+    }
 }
 
-Main($environment)
+Main
