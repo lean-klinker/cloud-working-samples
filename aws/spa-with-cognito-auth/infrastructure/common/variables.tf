@@ -4,14 +4,12 @@ variable "env" {
 
 variable "app" {
   type = string
+  default = "sample"
 }
 
 variable "spa_output" {
   type = string
-}
-
-variable "spa_origin_id" {
-  type = string
+  default = "../../build"
 }
 
 variable "region" {
