@@ -1,4 +1,5 @@
 locals {
+  bucket_name = "${local.namespace}-spa"
   mime_types = {
     htm = "text/html"
     html = "text/html"
@@ -23,18 +24,24 @@ data "template_file" "spa_settings_file" {
     idp_metadata_uri = local.cognito_oidc_metadata_uri
     spa_redirect_uri = "${local.cloudfront_uri}/.auth/callback"
   }
+}
 
-  depends_on = [
-    aws_cognito_user_pool_client.spa_app_client,
-    aws_cloudfront_distribution.spa
-  ]
+data "template_file" "bucket_policy" {
+  template = file("../templates/iam/policies/bucket_policy.json")
+
+  vars = {
+    bucket_name = local.bucket_name
+    origin_access_identity_arn = aws_cloudfront_origin_access_identity.spa_origin_identity.iam_arn
+  }
 }
 
 resource "aws_s3_bucket" "spa" {
-  bucket = "${local.namespace}-spa"
+  bucket = local.bucket_name
+  policy = data.template_file.bucket_policy.rendered
 
-  acl = "private"
-
+  website {
+    index_document = "index.html"
+  }
   tags = local.tags
 }
 
@@ -46,9 +53,6 @@ resource "aws_s3_bucket_object" "spa_content" {
   content_type = lookup(local.mime_types, split(".", each.value)[length(split(".", each.value)) - 1])
 
   tags = local.tags
-  depends_on = [
-    aws_s3_bucket.spa
-  ]
 }
 
 resource "aws_s3_bucket_object" "settings_json" {
@@ -58,9 +62,4 @@ resource "aws_s3_bucket_object" "settings_json" {
   content_type = "application/json"
 
   tags = local.tags
-
-  depends_on = [
-    aws_s3_bucket.spa,
-    aws_s3_bucket_object.spa_content
-  ]
 }
