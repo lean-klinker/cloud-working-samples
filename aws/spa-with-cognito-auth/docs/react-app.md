@@ -20,6 +20,10 @@ the interactions with any [OpenID Connect](https://openid.net/connect/) provider
 use [Cognito](https://aws.amazon.com/cognito/). This is being done using a `settings.json` that is uploaded to s3 when
 the application deploys.
 
+The interactions with `oidc-client` can be found in the [auth-service.js](../src/authentication/services/auth-service.js).
+
+The `settings.json` file is loaded in [AuthProvider](../src/authentication/providers/AuthProvider.js).
+
 ### Why use `settings.json`?
 
 This allows for the infrastructure to be generated and for the application to consume the newly created infrastructure.
