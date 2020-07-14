@@ -17,6 +17,9 @@ resource "aws_cognito_user_pool" "spa" {
 
   tags = local.tags
 
+  auto_verified_attributes = ["email"]
+  username_attributes = ["email"]
+
   admin_create_user_config {
     allow_admin_create_user_only = false
   }
@@ -24,6 +27,7 @@ resource "aws_cognito_user_pool" "spa" {
   username_configuration {
     case_sensitive = false
   }
+
 
   password_policy {
     minimum_length = 8
