@@ -67,5 +67,11 @@ resource "aws_cloudfront_distribution" "spa" {
     response_page_path = "/index.html"
   }
 
+  custom_error_response {
+    error_code = 403
+    response_code = 200
+    response_page_path = "/index.html"
+  }
+
   tags = local.tags
 }
