@@ -22,7 +22,9 @@ data "template_file" "spa_settings_file" {
     spa_client_id = aws_cognito_user_pool_client.spa_app_client.id
     idp_authority = local.cognito_user_pool_uri
     idp_metadata_uri = local.cognito_oidc_metadata_uri
-    spa_redirect_uri = "${local.cloudfront_uri}/.auth/callback"
+    spa_redirect_uri = "${local.cloudfront_uri}/.auth/callback",
+    lambda_api_url = aws_api_gateway_deployment.api_deployment.invoke_url
+    scope = join(" ", aws_cognito_user_pool_client.spa_app_client.allowed_oauth_scopes)
   }
 }
 
@@ -51,7 +53,7 @@ resource "aws_s3_bucket_object" "spa_content" {
   key = replace(each.value, var.spa_output, "")
   source = "${var.spa_output}/${each.value}"
   content_type = lookup(local.mime_types, split(".", each.value)[length(split(".", each.value)) - 1])
-
+  etag = filemd5("${var.spa_output}/${each.value}")
   tags = local.tags
 }
 
@@ -60,6 +62,6 @@ resource "aws_s3_bucket_object" "settings_json" {
   key = "settings.json"
   content_base64 = base64encode(data.template_file.spa_settings_file.rendered)
   content_type = "application/json"
-
+  etag = md5(data.template_file.spa_settings_file.rendered)
   tags = local.tags
 }

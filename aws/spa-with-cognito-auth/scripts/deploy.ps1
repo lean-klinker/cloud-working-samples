@@ -1,5 +1,7 @@
 param ([string] $environment = "dev", [bool] $should_destroy = $false)
 
+$spa_directory = "./spa"
+$lambda_directory = "./lambda"
 $infrastructure_directory = "./infrastructure/${environment}"
 $bucket_name = "spa-cognito-sample-${environment}"
 $aws_region = "us-east-1"
@@ -18,8 +20,38 @@ function Create-Terraform-Backend-Bucket() {
 }
 
 function Build-Spa-Application() {
-    yarn build
-    Ensure-Success -message "Failed to build spa application"
+    Push-Location $spa_directory
+        yarn install
+
+        yarn build
+        Ensure-Success -message "Failed to build spa application"
+
+        if (Test-Path "./build/settings.json")
+        {
+            Remove-Item -Force "./build/settings.json"
+        }
+    Pop-Location
+}
+
+function Prepare-Lambda-Application() {
+    $temp_lambda_build = "./lambda_build"
+    $lambda_build = "${lambda_directory}/build"
+
+    if (Test-Path -Path ${lambda_build}) {
+        Remove-Item -Recurse -Force ${lambda_build}
+        Ensure-Success -message "Failed to delete ${lambda_build}"
+    }
+
+    Copy-Item -Path "${lambda_directory}" -Destination ${temp_lambda_build} -Exclude ("node_modules/*", "build.zip") -Recurse
+    Ensure-Success -message "Failed to copy ${lambda_directory} to ${temp_lambda_build}"
+
+    Move-Item -Path ${temp_lambda_build} -Destination ${lambda_build}
+    Ensure-Success -message "Failed to move ${temp_lambda_build} directory to ${lambda_build}"
+
+    Push-Location ${lambda_build}
+        yarn install --production
+        Ensure-Success -message "Failed to install node dependencies in ${lambda_build}"
+    Pop-Location
 }
 
 function Initialize-Terraform() {
@@ -61,6 +93,8 @@ function Destroy-Terraform-Infrastructure() {
 
 function Main() {
     Build-Spa-Application
+    Prepare-Lambda-Application
+
     Create-Terraform-Backend-Bucket
     Initialize-Terraform
     Deploy-Terraform-Infrastructure

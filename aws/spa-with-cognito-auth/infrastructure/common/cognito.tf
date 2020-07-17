@@ -1,6 +1,12 @@
 locals {
   cognito_user_pool_uri = "https://${aws_cognito_user_pool_domain.spa.domain}.auth.${var.region}.amazoncognito.com"
   cognito_oidc_metadata_uri = "https://${aws_cognito_user_pool.spa.endpoint}/.well-known/openid-configuration"
+  standard_oauth_scopes = [
+    "email",
+    "openid",
+    "profile",
+    "aws.cognito.signin.user.admin"
+  ]
 }
 
 resource "random_integer" "spa_domain_postfix" {
@@ -54,12 +60,10 @@ resource "aws_cognito_user_pool_client" "spa_app_client" {
     "implicit"
   ]
 
-  allowed_oauth_scopes = [
-    "email",
-    "openid",
-    "profile",
-    "aws.cognito.signin.user.admin",
-  ]
+  allowed_oauth_scopes = concat(
+    local.standard_oauth_scopes,
+    aws_cognito_resource_server.lambda_api.scope_identifiers
+  )
 
   default_redirect_uri = "https://${aws_cloudfront_distribution.spa.domain_name}/.auth/callback"
 
@@ -100,4 +104,20 @@ resource "aws_cognito_identity_pool" "spa" {
 resource "aws_cognito_user_pool_domain" "spa" {
   user_pool_id = aws_cognito_user_pool.spa.id
   domain = "${local.namespace}-${random_integer.spa_domain_postfix.result}"
+}
+
+resource "aws_cognito_resource_server" "lambda_api" {
+  name = "${local.namespace}-lambda-api"
+  identifier = "${local.namespace}-resource"
+  user_pool_id = aws_cognito_user_pool.spa.id
+
+  scope {
+    scope_description = "Read data from lambda api"
+    scope_name = "read"
+  }
+
+  scope {
+    scope_description = "Write data to lambda api"
+    scope_name = "write"
+  }
 }

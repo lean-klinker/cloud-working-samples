@@ -43,4 +43,13 @@ export class AuthService {
             ? User.fromStorageString(serializedUser)
             : null;
     }
+
+    getAccessToken = async () => {
+        if (this.isAuthenticated()) {
+            return null;
+        }
+
+        const user = await this.getUser();
+        return user.access_token;
+    }
 }

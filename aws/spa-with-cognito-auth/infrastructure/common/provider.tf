@@ -14,3 +14,11 @@ provider "template" {
 provider "random" {
   version = "=2.3.0"
 }
+
+provider "archive" {
+  version = "=1.3.0"
+}
+
+provider "time" {
+  version = "=0.5.0"
+}

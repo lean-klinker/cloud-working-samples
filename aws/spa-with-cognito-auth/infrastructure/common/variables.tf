@@ -9,7 +9,17 @@ variable "app" {
 
 variable "spa_output" {
   type = string
-  default = "../../build"
+  default = "../../spa/build"
+}
+
+variable "lambda_api_output" {
+  type = string
+  default = "../../lambda/build.zip"
+}
+
+variable "lambda_api_source_dir" {
+  type = string
+  default = "../../lambda/build"
 }
 
 variable "region" {
@@ -55,6 +65,11 @@ variable "spa_client_read_attributes" {
     "updated_at",
     "website"
   ]
+}
+
+variable "lambda_api_runtime" {
+  type = string
+  default = "nodejs12.x"
 }
 
 locals {
