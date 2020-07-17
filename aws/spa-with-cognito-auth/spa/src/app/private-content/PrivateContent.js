@@ -2,7 +2,7 @@ import React from "react";
 import {useFetchGet} from "../hooks/useFetch";
 
 export default function PrivateContent() {
-    const [isLoading, error, result] = useFetchGet('/api/message');
+    const [{isLoading, error, result}] = useFetchGet('/api/message');
 
     if (isLoading) {
         return <span>Loading data...</span>
@@ -15,7 +15,7 @@ export default function PrivateContent() {
     return (
         <div>
             You are authenticated.
-
+            <br />
             <span>{result.text}</span>
         </div>
     )
