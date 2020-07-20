@@ -8,7 +8,7 @@ import {AuthService} from "./authentication/services/auth-service";
 
 async function main() {
     const settings = await loadSettings();
-    const authService = new AuthService(settings);
+    const authService = AuthService.createFromSettings(settings);
     ReactDOM.render(
         <React.StrictMode>
             <App settings={settings} authService={authService}/>

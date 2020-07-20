@@ -5,25 +5,19 @@ export class AuthService {
         return this.manager.settings;
     }
 
-    get userStore() {
-        return this.settings.userStore;
-    }
-
     get userKey() {
-        return `oidc.user:${this.settings.authority}:${this.settings.client_id}`
+        return `oidc.user:${this.settings.authority}:${this.settings.client_id}`;
     }
 
-    constructor(settings) {
-        this.manager = new UserManager({
-            ...settings,
-            userStore: new WebStorageStateStore({ store: window.sessionStorage })
-        });
+    constructor(manager, storage) {
+        this.manager = manager;
+        this.storage = storage;
     }
 
     isAuthenticated = () => {
         const storedUser = this.getStoredUser();
-        return storedUser && !storedUser.expired;
-    }
+        return !!storedUser && !storedUser.expired;
+    };
 
     signinRedirect = async () => {
         await this.manager.signinRedirect();
@@ -35,21 +29,30 @@ export class AuthService {
 
     getUser = () => {
         return this.manager.getUser();
-    }
+    };
 
     getStoredUser = () => {
-        const serializedUser = window.sessionStorage.getItem(this.userKey);
+        const serializedUser = this.storage.getItem(this.userKey);
         return serializedUser
             ? User.fromStorageString(serializedUser)
             : null;
-    }
+    };
 
     getAccessToken = async () => {
-        if (this.isAuthenticated()) {
+        if (!this.isAuthenticated()) {
             return null;
         }
 
         const user = await this.getUser();
         return user.access_token;
+    };
+
+    static createFromSettings(settings) {
+        const storage = window.sessionStorage;
+        const manager = new UserManager({
+            ...settings,
+            userStore: new WebStorageStateStore({store: storage})
+        });
+        return new AuthService(manager, storage);
     }
 }
