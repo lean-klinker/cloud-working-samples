@@ -28,18 +28,9 @@ data "template_file" "spa_settings_file" {
   }
 }
 
-data "template_file" "bucket_policy" {
-  template = file("../templates/iam/policies/bucket_policy.json")
-
-  vars = {
-    bucket_name = local.bucket_name
-    origin_access_identity_arn = aws_cloudfront_origin_access_identity.spa_origin_identity.iam_arn
-  }
-}
-
 resource "aws_s3_bucket" "spa" {
   bucket = local.bucket_name
-  policy = data.template_file.bucket_policy.rendered
+  policy = data.aws_iam_policy_document.cloudfront_origin_policy.json
 
   website {
     index_document = "index.html"

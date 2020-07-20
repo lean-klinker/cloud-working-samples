@@ -7,28 +7,8 @@ data "archive_file" "lambda_package" {
 resource "time_static" "lambda" {
 }
 
-resource "aws_iam_role" "lambda_assume_role_policy" {
-  name = "${local.namespace}-lambda-role"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
-}
-
 resource "aws_s3_bucket_object" "lambda_api_code" {
-  key = "${local.namespace}-lambda-code-${time_static.lambda.rfc3339}"
+  key = "${local.namespace}-lambda-code-${time_static.lambda.rfc3339}.zip"
   bucket = aws_s3_bucket.spa.id
   source = data.archive_file.lambda_package.output_path
   etag = data.archive_file.lambda_package.output_base64sha256

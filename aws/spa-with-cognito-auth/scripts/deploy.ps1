@@ -34,23 +34,14 @@ function Build-Spa-Application() {
 }
 
 function Prepare-Lambda-Application() {
-    $temp_lambda_build = "./lambda_build"
-    $lambda_build = "${lambda_directory}/build"
+    Push-Location ${lambda_directory}
+        yarn build
+        Ensure-Success -message "Failed to build lambda application"
 
-    if (Test-Path -Path ${lambda_build}) {
-        Remove-Item -Recurse -Force ${lambda_build}
-        Ensure-Success -message "Failed to delete ${lambda_build}"
-    }
-
-    Copy-Item -Path "${lambda_directory}" -Destination ${temp_lambda_build} -Exclude ("node_modules/*", "build.zip") -Recurse
-    Ensure-Success -message "Failed to copy ${lambda_directory} to ${temp_lambda_build}"
-
-    Move-Item -Path ${temp_lambda_build} -Destination ${lambda_build}
-    Ensure-Success -message "Failed to move ${temp_lambda_build} directory to ${lambda_build}"
-
-    Push-Location ${lambda_build}
-        yarn install --production
-        Ensure-Success -message "Failed to install node dependencies in ${lambda_build}"
+        Push-Location "./build"
+            yarn install --production
+            Ensure-Success -message "Failed to install dependencies for package lambda"
+        Pop-Location
     Pop-Location
 }
 
