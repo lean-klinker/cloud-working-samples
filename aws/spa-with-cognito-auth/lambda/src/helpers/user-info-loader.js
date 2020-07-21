@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export async function getUserInfo(gatewayEvent) {
-    const issuerUrl = gatewayEvent.requestContext.authorizer.claims.iss;
+export async function getUserInfo(authorizationHeader) {
+
     const openIdConfigUrl = `${issuerUrl}/.well-known/openid-configuration`;
     const response = await axios.get(openIdConfigUrl);
     const {userinfo_endpoint} = response.data;

@@ -9,20 +9,27 @@
     "build:lambda": "babel ./lambda.js --out-dir ./build",
     "copy:package": "copyfiles ./package.json ./build",
     "copy:lock": "copyfiles ./yarn.lock ./build",
-    "build": "yarn build:src && yarn build:lambda && yarn copy:package && yarn copy:lock"
+    "build": "yarn build:src && yarn build:lambda && yarn copy:package && yarn copy:lock",
+    "start": "cross-env ENV=local node ./index.js",
+    "test": "jest",
+    "test:ci": "yarn test --ci"
   },
   "dependencies": {
     "aws-serverless-express": "3.3.8",
     "axios": "0.19.2",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {
     "@babel/cli": "7.10.5",
     "@babel/core": "7.10.5",
     "@babel/preset-env": "7.10.4",
+    "@babel/register": "7.10.5",
     "copyfiles": "2.3.0",
+    "cross-env": "7.0.2",
+    "jest": "25.5.4",
     "rimraf": "3.0.2"
   }
 }
