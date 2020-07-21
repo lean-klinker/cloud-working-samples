@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import cors from 'cors';
-import {getUserInfo} from './helpers/user-info-loader';
+
 import {user} from './middleware/user-middleware';
 
 const app = express();

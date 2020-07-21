@@ -71,7 +71,7 @@ describe('user-middleware', () => {
     function createRequest() {
         return {
             headers: {
-                Authorization: `Bearer ${authToken}`
+                authorization: `Bearer ${authToken}`
             }
         };
     }
