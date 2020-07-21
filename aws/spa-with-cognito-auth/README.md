@@ -22,3 +22,9 @@ Read more specifics here: [Deploy Script](./docs/deploy-script.md)
 An extremely simple web application with public and protected content.
 
 Read more specifics here: [React App](./docs/react-app.md)
+
+## Lambda Application
+
+An simple lambda application with a protected rest api.
+
+Read more here: [Lambda](./docs/lambda.md)
