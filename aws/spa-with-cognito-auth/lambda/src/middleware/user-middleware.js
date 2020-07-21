@@ -22,7 +22,7 @@ async function loadUserInfo(token, req, requestor) {
     const openIdConfig = (await requestor.get(openIdConfigurationUrl)).data;
     const userInfo = await requestor.get(openIdConfig.userinfo_endpoint, {
         headers: {
-            Authorization: req.headers.Authorization
+            Authorization: getAuthorizationHeader(req)
         }
     });
     return {
@@ -40,6 +40,10 @@ function getLocalUser() {
 }
 
 function extractUserFromToken(req) {
-    const token = req.headers['authorization'].split(' ')[1];
+    const token = getAuthorizationHeader(req).split(' ')[1];
     return jwt.decode(token);
+}
+
+function getAuthorizationHeader(req) {
+    return req.headers['authorization'];
 }
