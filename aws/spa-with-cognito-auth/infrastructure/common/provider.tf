@@ -1,3 +1,4 @@
+// This file is used to specify the versions of terraform that are required to use this module.
 terraform {
   required_version = "=0.12.28"
 }

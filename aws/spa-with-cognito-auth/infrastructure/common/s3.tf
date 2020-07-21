@@ -15,6 +15,9 @@ locals {
   }
 }
 
+// Here we are leveraging terraform's template file provider to generate our settings.json based on the infrastructure
+// that is being deployed. This allows our settings.json to be generated correctly each time and be immediately
+// available to the application on deployment.
 data "template_file" "spa_settings_file" {
   template = file("../templates/spa/settings.json")
 
@@ -28,6 +31,7 @@ data "template_file" "spa_settings_file" {
   }
 }
 
+// This is the S3 bucket that will hold our react application and lambda code.
 resource "aws_s3_bucket" "spa" {
   bucket = local.bucket_name
   policy = data.aws_iam_policy_document.cloudfront_origin_policy.json
@@ -38,6 +42,8 @@ resource "aws_s3_bucket" "spa" {
   tags = local.tags
 }
 
+// We can leverage terraform's for_each to upload each file in our react applications build folder.
+// This will ensure that the correct files are uploaded AND that old files are removed from the bucket.
 resource "aws_s3_bucket_object" "spa_content" {
   for_each = fileset(var.spa_output, "**/*.*")
   bucket = aws_s3_bucket.spa.bucket
@@ -48,6 +54,9 @@ resource "aws_s3_bucket_object" "spa_content" {
   tags = local.tags
 }
 
+// Since terraform is responsible for generating our settings.json file based on the current infrastructure. We need
+// to have terraform upload the generated settings.json file to our S3 bucket so that CloudFront can serve it to the
+// react application.
 resource "aws_s3_bucket_object" "settings_json" {
   bucket = aws_s3_bucket.spa.bucket
   key = "settings.json"

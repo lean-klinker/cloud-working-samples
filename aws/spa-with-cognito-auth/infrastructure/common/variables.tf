@@ -1,3 +1,5 @@
+// Each module can specify a set of required and optional variables. Required variables are ones that do not have a
+// defautl value.
 variable "env" {
   type = string
 }
@@ -9,6 +11,8 @@ variable "app" {
 
 variable "spa_output" {
   type = string
+
+  // All paths are relative to where on the file system this file is located.
   default = "../../spa/build"
 }
 
