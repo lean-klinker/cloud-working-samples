@@ -12,9 +12,7 @@
             "AmplifyAppId": "d35kl7c25e6xga"
         },
         "categories": {
-            "auth": {
-                "cognitob8380cc6": {}
-            }
+            "auth": {}
         }
     }
 }

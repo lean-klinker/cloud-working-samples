@@ -1,32 +1,5 @@
 {
-	"function": {
-		"amplifylambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": []
-		}
-	},
-	"auth": {
-		"cognitob8380cc6": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation"
-		}
-	},
-	"api": {
-		"restapi": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "amplifylambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		}
-	}
+	"function": {},
+	"auth": {},
+	"api": {}
 }
