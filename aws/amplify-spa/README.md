@@ -12,8 +12,10 @@ amplify does and when it does it.
 
 ### Commands
 
-- [Init](./docs/amplify-init.md)
+- [init](./docs/amplify-init.md)
     - Initializes amplify application
+- [add api](./docs/amplify-add-api.md)
+    - Adds an api to your application
     
 ## Packages Used
 
