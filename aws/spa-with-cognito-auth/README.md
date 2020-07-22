@@ -25,6 +25,14 @@ Read more specifics here: [React App](./docs/react-app.md)
 
 ## Lambda Application
 
-An simple lambda application with a protected rest api.
+A simple lambda application with a protected rest api.
 
 Read more here: [Lambda](./docs/lambda.md)
+
+## GitHub Action
+
+A sample github action is also included that could be used to deploy the application and its infrastructure.
+
+Read more here: [GitHub Action](./docs/github-action.md)
+
+ 

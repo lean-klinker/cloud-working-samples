@@ -7,16 +7,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-18.04
+
     strategy:
       matrix:
         node-version: [10.14.1]
+        terraform-version: [0.12.28]
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: pwsh ./scripts/prepare.ps1
-      - run: pwsh ./scripts/run-tests.ps1
-      - run: pwsh ./scripts/deploy.ps1 -environment dev -should_destroy $False
+
+      - name: Setup Terraform ${{ matrix.terraform-version }}
+        uses: hashicorp/setup-terraform@v1
+          with:
+            terraform_version: ${{ matrix.terraform-version }}
+
+      - name: Run Tests
+        run: pwsh ./scripts/run-tests.ps1
+
+      - name: Deploy Dev Environment
+        run: pwsh ./scripts/deploy.ps1 -environment dev -should_destroy $False
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
