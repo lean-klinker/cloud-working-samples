@@ -1,0 +1,7 @@
+{
+    "tableName": "teams",
+    "partitionKeyName": "id",
+    "partitionKeyType": "N",
+    "sortKeyName": "name",
+    "sortKeyType": "S"
+}

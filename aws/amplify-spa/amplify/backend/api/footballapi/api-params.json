@@ -1,0 +1,41 @@
+{
+    "paths": [
+        {
+            "name": "/teams",
+            "lambdaFunction": "footballlambda",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "footballapi",
+    "apiName": "footballapi",
+    "functionArns": [
+        {
+            "lambdaFunction": "footballlambda"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-amplifyspa-dev-104641-authRole",
+        "unAuthRoleName": "amplify-amplifyspa-dev-104641-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "footballlambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

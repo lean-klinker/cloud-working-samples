@@ -1,0 +1,15 @@
+{
+  "mutableParametersState": {
+    "permissions": {
+      "auth": {
+        "amplifyspa83b8e7b9": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  },
+  "lambdaLayers": []
+}
