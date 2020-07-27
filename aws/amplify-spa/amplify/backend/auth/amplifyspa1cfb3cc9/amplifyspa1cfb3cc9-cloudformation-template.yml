@@ -151,17 +151,6 @@ Resources:
           Name: email
           Required: true
           Mutable: true
-        
-        -
-          Name: family_name
-          Required: true
-          Mutable: true
-        
-        -
-          Name: given_name
-          Required: true
-          Mutable: true
-        
       
       
       
