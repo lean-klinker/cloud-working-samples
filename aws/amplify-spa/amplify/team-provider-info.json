@@ -17,6 +17,9 @@
                     "appId": "d2j85ep4gz54di",
                     "type": "manual"
                 }
+            },
+            "auth": {
+                "amplifyspa1cfb3cc9": {}
             }
         }
     }
