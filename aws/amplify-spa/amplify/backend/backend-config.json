@@ -1,5 +1,9 @@
 {
-	"function": {},
-	"auth": {},
-	"api": {}
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
+        }
+    }
 }

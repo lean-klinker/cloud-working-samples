@@ -1,6 +1,6 @@
 # `amplify add api`
 
-**NOTE:** Adding the api will not update your cloud infrastructure.
+**NOTE:** Adding the api will not update the infrastructure you have deployed.
 **NOTE:** This can help with getting authentication setup in your application.
 
 This command will walkthrough adding a backend api to your application.
