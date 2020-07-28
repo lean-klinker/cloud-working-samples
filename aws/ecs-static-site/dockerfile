@@ -1,0 +1,9 @@
+FROM node:10.14.1:alpine
+
+COPY . /app
+
+WORKDIR /app
+
+ENV PORT=8080
+
+ENTRYPOINT npm start

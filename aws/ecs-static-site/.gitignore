@@ -1,0 +1,4 @@
+*.ppk
+node_modules/
+.idea/
+**/*.log
