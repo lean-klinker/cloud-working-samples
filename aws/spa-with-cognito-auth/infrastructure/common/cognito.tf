@@ -22,6 +22,8 @@ resource "random_integer" "spa_domain_postfix" {
   }
 }
 
+
+
 // Create a user pool for authenticating users for our application.
 resource "aws_cognito_user_pool" "users" {
   name = "${local.namespace}-cognito-user-pool"

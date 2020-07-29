@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {withAuthenticator} from '@aws-amplify/ui-react';
+import { API } from 'aws-amplify';
 
 function App() {
+  const [state, setState] = useState({isLoading: true, result: null, error: null});
+  useEffect(() => {
+    API.get('footballapi', '/teams').then(result => {
+      console.log(JSON.stringify(result));
+    })
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
